@@ -22,6 +22,11 @@ public class Point implements Comparable<Point> {
     public final Comparator<Point> SLOPE_ORDER = new Comparator<Point>() {
         @Override
         public int compare(Point p1, Point p2) {
+            double slope_1 = slopeTo(p1);
+            double slope_2 = slopeTo(p2);
+
+
+
             return 0;
         }
     };       // YOUR DEFINITION HERE
@@ -51,7 +56,20 @@ public class Point implements Comparable<Point> {
     // slope between this point and that point
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        return 1.0;
+        double slope;
+        double dy = that.y - this.y;
+        double dx = that.x - this.x;
+        if (dy == 0 && dx == 0) {
+            slope = Double.NEGATIVE_INFINITY;
+        } else if (dy == 0 && dx != 0) {
+            slope = 0d;
+        } else if (dx == 0 && dy != 0) {
+            slope = Double.POSITIVE_INFINITY;
+        } else {
+            slope = dy / dx;
+        }
+
+        return slope;
     }
 
     // is this point lexicographically smaller than that one?
