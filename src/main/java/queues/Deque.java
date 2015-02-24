@@ -27,7 +27,7 @@ public class Deque<Item> implements Iterable<Item> {
     public int size() {
         int size = 0;
         DequeueItem current = first;
-        while(current!=null){
+        while (current != null) {
             current = current.getNext();
             size++;
         }
@@ -39,7 +39,7 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NullPointerException();
         }
         DequeueItem di = new DequeueItem(item, first, null);
-        if(first != null){
+        if (first != null) {
             first.previous = di;
         }
         first = di;
@@ -54,7 +54,7 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NullPointerException();
         }
         DequeueItem di = new DequeueItem(item, null, last);
-        if(last != null){
+        if (last != null) {
             last.next = di;
         }
         last = di;
@@ -70,6 +70,11 @@ public class Deque<Item> implements Iterable<Item> {
         }
         DequeueItem temp = first;
         first = first.getNext();
+        if (first != null) {
+            first.previous = null;
+        } else {
+            last = null;
+        }
         return (Item) temp.getItem();
     }
 
@@ -79,7 +84,11 @@ public class Deque<Item> implements Iterable<Item> {
         }
         DequeueItem temp = last;
         last = last.getPrevious();
-        last.next = null;
+        if (last != null) {
+            last.next = null;
+        } else {
+            first = null;
+        }
         return (Item) temp.getItem();
     }
 
@@ -87,16 +96,16 @@ public class Deque<Item> implements Iterable<Item> {
         return new DequeueItemIterator(first);
     }
 
-    private class DequeueItemIterator<Item> implements Iterator<Item>{
+    private class DequeueItemIterator<Item> implements Iterator<Item> {
         private DequeueItem iterator;
 
-        public DequeueItemIterator(DequeueItem first){
+        public DequeueItemIterator(DequeueItem first) {
             iterator = first;
         }
 
         @Override
         public boolean hasNext() {
-            return iterator!= null;
+            return iterator != null;
         }
 
         @Override
@@ -104,7 +113,7 @@ public class Deque<Item> implements Iterable<Item> {
             if (iterator.getNext() == null) {
                 new NoSuchElementException();
             }
-            Item result = (Item)iterator.getItem();
+            Item result = (Item) iterator.getItem();
             iterator = iterator.getNext();
             return result;
         }
@@ -149,7 +158,7 @@ public class Deque<Item> implements Iterable<Item> {
         dequeue.addLast("001");
 
         Iterator<String> iterator = dequeue.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
 
@@ -160,7 +169,7 @@ public class Deque<Item> implements Iterable<Item> {
 
         System.out.println("Size = " + String.valueOf(dequeue.size()));
         iterator = dequeue.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
     }

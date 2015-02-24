@@ -13,7 +13,6 @@ public class Subset {
 
         RandomizedQueue<String> queue = new RandomizedQueue<String>();
 
-        String element = null;
         while (!StdIn.isEmpty()) {
             queue.enqueue(StdIn.readString());
         }

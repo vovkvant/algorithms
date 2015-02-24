@@ -25,8 +25,6 @@ public class Point implements Comparable<Point> {
             double slope_1 = slopeTo(p1);
             double slope_2 = slopeTo(p2);
 
-
-
             return 0;
         }
     };       // YOUR DEFINITION HERE
