@@ -12,7 +12,6 @@ public class Percolation {
     private int N;
 
     private boolean[][] siteArray;
-    private boolean percolates = false;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -32,12 +31,10 @@ public class Percolation {
         for (int k = 0; k < N - 1; k++) {
             uf.union(k, k + 1);
         }
-        /*
+
         for (int k = N * N - 1; k > N * N - N; k--) {
             uf.union(k, k - 1);
         }
-        */
-
     }
 
 
@@ -59,13 +56,6 @@ public class Percolation {
             int p = getIndex(i, j);
             checkIsOpen(p, i, j - 1);
         }
-
-        if (i == N) {
-            int value = uf.find(0);
-            int p = getIndex(i, j);
-            if (uf.find(p) == value)
-                percolates = true;
-        }
     }
 
     public boolean isOpen(int i, int j) {
@@ -84,23 +74,20 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        if(percolates){
-            return true;
-        }
-        else{
-            int value = uf.find(0);
-            int i = N;
-            for (int j = 1; j <= N; j++) {
-                if (getSite(i, j)) {
-                    int p = getIndex(i, j);
-                    if (uf.find(p) == value){
-                        percolates = true;
-                        return true;
-                    }
+        return uf.find(0) == uf.find(N*N-1);
+        /*
+        int value = uf.find(0);
+        int i = N;
+        for (int j = 1; j <= N; j++) {
+            if (getSite(i, j)) {
+                int p = getIndex(i, j);
+                if (uf.find(p) == value) {
+                    return true;
                 }
             }
         }
         return false;
+        */
     }
 
     private boolean getSite(int i, int j) {
