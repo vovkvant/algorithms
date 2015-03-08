@@ -12,6 +12,7 @@ public class Percolation {
     private int N;
 
     private boolean[][] siteArray;
+    private boolean percolates = false;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -27,12 +28,16 @@ public class Percolation {
         }
 
         uf = new WeightedQuickUnionUF(N * N);
-        for(int k=0; k<N-1; k++){
-            uf.union(k, k+1);
+
+        for (int k = 0; k < N - 1; k++) {
+            uf.union(k, k + 1);
         }
-        for(int k = N*N-1; k> N*N-N; k--){
-            uf.union(k, k-1);
+        /*
+        for (int k = N * N - 1; k > N * N - N; k--) {
+            uf.union(k, k - 1);
         }
+        */
+
     }
 
 
@@ -54,6 +59,13 @@ public class Percolation {
             int p = getIndex(i, j);
             checkIsOpen(p, i, j - 1);
         }
+
+        if (i == N) {
+            int value = uf.find(0);
+            int p = getIndex(i, j);
+            if (uf.find(p) == value)
+                percolates = true;
+        }
     }
 
     public boolean isOpen(int i, int j) {
@@ -61,42 +73,33 @@ public class Percolation {
     }
 
     public boolean isFull(int i, int j) {
-        for (int k = 0; k < N; k++) {
-            if (isOpen(i, j)) {
-                int q = getIndex(i, j);
-                if (uf.connected(k, q)) {
-                    return true;
-                }
+        int value = uf.find(0);
+        if (isOpen(i, j)) {
+            int q = getIndex(i, j);
+            if (uf.find(q) == value) {
+                return true;
             }
         }
         return false;
     }
 
     public boolean percolates() {
-        int i = 1;
-        for (int j = 1; j <= N; j++) {
-            if (getSite(i, j)) {
-                int p = getIndex(i, j);
-                if (uf.connected(p, N*N-1))
-                    return true;
-            }
+        if(percolates){
+            return true;
         }
-        /*
-        int i = 1;
-        for (int j = 1; j <= N; j++) {
-            if (getSite(i, j)) {
-                int p = getIndex(i, j);
-                int i2 = N;
-                for (int j2 = 1; j2 <= N; j2++) {
-                    if (getSite(i2, j2)) {
-                        int q = getIndex(i2, j2);
-                        if (uf.connected(p, q))
-                            return true;
+        else{
+            int value = uf.find(0);
+            int i = N;
+            for (int j = 1; j <= N; j++) {
+                if (getSite(i, j)) {
+                    int p = getIndex(i, j);
+                    if (uf.find(p) == value){
+                        percolates = true;
+                        return true;
                     }
                 }
             }
         }
-        */
         return false;
     }
 
@@ -115,9 +118,7 @@ public class Percolation {
     private void checkIsOpen(int p, int i, int j) {
         if (isOpen(i, j)) {
             int q = getIndex(i, j);
-            if(!uf.connected(p, q)){
-                uf.union(p, q);
-            }
+            uf.union(p, q);
         }
     }
 

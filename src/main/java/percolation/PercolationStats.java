@@ -19,16 +19,21 @@ public class PercolationStats {
         }
         this.T = T;
         result = new double[T];
+
         for (int k = 0; k < T; k++) {
-            System.out.println("Number of try: " + k);
             Percolation percolation1 = new Percolation(N);
             double count = 0d;
-            while (!percolation1.percolates()) {
-                int i = StdRandom.uniform(1, N + 1);
-                int j = StdRandom.uniform(1, N + 1);
-                if (!percolation1.isOpen(i, j)) {
+            boolean percolate = false;
+            while (!percolate) {
+                int num = StdRandom.uniform(0, N * N);
+                int i = num / N + 1;
+                int j = num % N + 1;
+                if(!percolation1.isOpen(i, j)){
                     percolation1.open(i, j);
                     count++;
+                    if (percolation1.percolates()) {
+                        percolate = true;
+                    }
                 }
             }
             result[k] = count / ((double) (N * N));
