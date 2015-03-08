@@ -110,8 +110,8 @@ public class Deque<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            if (iterator.getNext() == null) {
-                new NoSuchElementException();
+            if (iterator == null) {
+                throw new NoSuchElementException();
             }
             Item result = (Item) iterator.getItem();
             iterator = iterator.getNext();

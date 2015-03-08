@@ -35,6 +35,7 @@ public class Percolation {
         for (int k = N * N - 1; k > N * N - N; k--) {
             uf.union(k, k - 1);
         }
+
     }
 
 
@@ -74,7 +75,10 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return uf.find(0) == uf.find(N*N-1);
+        if(uf.find(0) == uf.find(N*N-1)){
+            return true;
+        }
+        return false;
         /*
         int value = uf.find(0);
         int i = N;

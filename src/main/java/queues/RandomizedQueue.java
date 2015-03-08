@@ -60,7 +60,20 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         queue = newQueue;
         last--;
+        resizeQueue();
+
         return item;
+    }
+
+    private void resizeQueue() {
+         if (last < (size / 4)) {
+            size = size / 2;
+            Item[] newQueue = (Item[]) (new Object[size]);
+            for (int k = 0; k < size; k++) {
+                newQueue[k] = queue[k];
+            }
+            queue = newQueue;
+        }
     }
 
     public Item sample() {
@@ -78,6 +91,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private class RandomizedQueueIterator<Item> implements Iterator<Item> {
 
         private int iterator = 0;
+        private int iteratorLast = 0;
+        private boolean[] indexArray;
+
+        public RandomizedQueueIterator() {
+            iteratorLast = last;
+            indexArray = new boolean[last];
+            for (int i = 0; i < last; i++) {
+                indexArray[i] = false;
+            }
+
+        }
 
         @Override
         public boolean hasNext() {
@@ -86,7 +110,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            Item item = (Item) queue[iterator];
+            if (iterator == last) {
+                throw new NoSuchElementException();
+            }
+            int random = StdRandom.uniform(0, last);
+            while(indexArray[random]){
+                random = StdRandom.uniform(0, last);
+            }
+
+            indexArray[random] = true;
+
+            Item item = (Item) queue[random];
             iterator++;
             return item;
         }
