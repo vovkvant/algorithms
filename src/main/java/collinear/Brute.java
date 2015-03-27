@@ -25,7 +25,7 @@ public class Brute {
     }
 
     public void startProcess() {
-        //take an array of ppoints
+        //take an array of points
         //process the points
         //p, q, r, and s
         for (int k = 0; k < last - 3; k++) {
