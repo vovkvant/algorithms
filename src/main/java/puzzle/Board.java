@@ -1,6 +1,7 @@
 package puzzle;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: vovkvant
@@ -8,11 +9,13 @@ import java.util.Iterator;
  */
 public class Board {
 
-    private int[][] blocks;
+    private final int[][] blocks;
 
-    public Board(int[][] blocks) {
+    public Board(final int[][] blocks) {
         this.blocks = blocks;
     }
+
+
 
     // board dimension N
     public int dimension() {
@@ -77,23 +80,43 @@ public class Board {
 
     // a boadr that is obtained by exchanging two adjacent blocks in the same row
     public Board twin() {
-        return this;
+        int row = 0;
+        if (blocks[row][0] != 0 && blocks[row][1] != 0) {
+            return swap(row);
+        } else {
+            row++;
+            return swap(row);
+        }
+    }
+
+    private Board swap(int row) {
+        int N = dimension();
+        int[][] copyBlocks = new int[N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                copyBlocks[i][j] = blocks[i][j];
+
+        int swap = copyBlocks[row][0];
+        copyBlocks[row][0] = copyBlocks[row][1];
+        copyBlocks[row][1] = swap;
+
+        return new Board(copyBlocks);
     }
 
     // does this board equal y?
     public boolean equals(Object y) {
-        if(y == this)
+        if (y == this)
             return true;
 
-        if(y instanceof Board){
+        if (y instanceof Board) {
             Board anotherBoard = (Board) y;
-            if(anotherBoard.dimension()!=this.dimension()){
+            if (anotherBoard.dimension() != this.dimension()) {
                 return false;
             }
 
             for (int i = 0; i < dimension(); i++) {
                 for (int j = 0; j < dimension(); j++) {
-                    if(this.blocks[i][j] != anotherBoard.blocks[i][j]){
+                    if (this.blocks[i][j] != anotherBoard.blocks[i][j]) {
                         return false;
                     }
                 }
@@ -105,17 +128,62 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return new Iterable<Board>() {
-            @Override
-            public Iterator<Board> iterator() {
-                return null;
+        List<Board> neighbors = new ArrayList<Board>();
+        int x0 = 0;
+        int y0 = 0;
+        int size = dimension();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (blocks[i][j] == 0) {
+                    y0 = i;
+                    x0 = j;
+                }
             }
-        };
+        }
+        if (x0 + 1 < size) {
+            neighbors.add(swap(x0, y0, x0 + 1, y0));
+        }
+        if (x0 - 1 >= 0) {
+            neighbors.add(swap(x0, y0, x0 - 1, y0));
+        }
+        if (y0 + 1 < size) {
+            neighbors.add(swap(x0, y0, x0, y0 + 1));
+        }
+        if (y0 - 1 >= 0) {
+            neighbors.add(swap(x0, y0, x0, y0 - 1));
+        }
+
+        return neighbors;
+    }
+
+    private Board swap(int x0, int y0, int x1, int y1) {
+        int N = dimension();
+        int[][] copyBlocks = new int[N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                copyBlocks[i][j] = blocks[i][j];
+
+        int swap = copyBlocks[y1][x1];
+        copyBlocks[y0][x0] = swap;
+        copyBlocks[y1][x1] = 0;
+
+        return new Board(copyBlocks);
     }
 
     // string representation of this board (in the output format specified below)
     public String toString() {
-        return "1";
+        StringBuffer sb = new StringBuffer("");
+        sb.append(dimension());
+        sb.append("\n");
+        for (int i = 0; i < dimension(); i++) {
+            for (int j = 0; j < dimension(); j++) {
+                sb.append(blocks[i][j]);
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     public static void main(String[] args) {
