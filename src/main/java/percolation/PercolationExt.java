@@ -1,6 +1,7 @@
 package percolation;
 
-import api.QuickFindUF;
+
+import edu.princeton.cs.algs4.QuickFindUF;
 
 /**
  * User: vovkvant

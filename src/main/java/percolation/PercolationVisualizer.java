@@ -18,8 +18,8 @@ package percolation;
  *
  ****************************************************************************/
 
-import api.In;
-import api.StdDraw;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
 

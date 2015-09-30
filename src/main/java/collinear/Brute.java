@@ -1,7 +1,8 @@
 package collinear;
 
-import api.In;
-import api.StdDraw;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+
 
 /**
  * Created by vovkvant on 22.02.2015.

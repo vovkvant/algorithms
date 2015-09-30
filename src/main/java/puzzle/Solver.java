@@ -1,6 +1,6 @@
 package puzzle;
 
-import api.MinPQ;
+import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,10 +17,9 @@ public class Solver {
     private MinPQ<BoardNode> boardQueue;
     private MinPQ<BoardNode> swapedBoardQueue;
     private BoardNode boardNode;
-    private ArrayList<Board> list = new ArrayList<Board>();
 
     public Solver(Board initial) {
-        boardNode = new BoardNode(initial, null, -1);
+        boardNode = new BoardNode(initial, null, 0);
         isSolvable = false;
         boardQueue = new MinPQ<BoardNode>(new BoardComparator());
         swapedBoardQueue = new MinPQ<BoardNode>(new BoardComparator());
@@ -42,7 +41,7 @@ public class Solver {
             BoardNode currentBoardNode = boardNode;
             ArrayList<Board> list = new ArrayList<Board>();
 
-            while(currentBoardNode.getRootBoardNode()!=null){
+            while (currentBoardNode.getRootBoardNode() != null) {
                 list.add(currentBoardNode.getBoard());
                 currentBoardNode = currentBoardNode.getRootBoardNode();
             }
@@ -72,13 +71,13 @@ public class Solver {
 
         while (boardIterator.hasNext()) {
             Board nextBoard = boardIterator.next();
-            if (!boardNode.getBoard().equals(nextBoard)) {
+            if (boardNode.getRootBoardNode() == null || !boardNode.getRootBoardNode().getBoard().equals(nextBoard)) {
                 if (isSwaped) {
 
                 } else {
-                    if (!list.contains(nextBoard)) {
-                        boardQueue.insert(new BoardNode(nextBoard, boardNode, boardNode.getMoveCounter()));
-                    }
+                    BoardNode newBoardNode = new BoardNode(nextBoard, boardNode, boardNode.getMoveCounter() + 1);
+                    boardQueue.insert(newBoardNode);
+
                 }
             }
         }
@@ -87,8 +86,9 @@ public class Solver {
 
         } else {
             BoardNode minBoardNode = boardQueue.min();
-            //System.out.println(minBoardNode.getBoard().manhattan());
-            list.add(minBoardNode.getBoard());
+            System.out.println(minBoardNode.getPriority());
+            System.out.println("Moves = "+minBoardNode.getMoveCounter());
+
             boardNode = minBoardNode;
 
             boardQueue.delMin();
@@ -100,14 +100,6 @@ public class Solver {
     private class BoardComparator implements Comparator<BoardNode> {
         @Override
         public int compare(BoardNode o1, BoardNode o2) {
-            /*
-            if (o1.getBoard().manhattan() > o2.getBoard().manhattan())
-                return 1;
-            else if (o1.getBoard().manhattan() == o2.getBoard().manhattan())
-                return 0;
-            else
-                return -1;
-                */
             if (o1.getPriority() > o2.getPriority())
                 return 1;
             else if (o1.getPriority() == o2.getPriority())
@@ -126,7 +118,7 @@ public class Solver {
         private BoardNode(Board board, BoardNode rootBoardNode, int moveCounter) {
             this.board = board;
             this.rootBoardNode = rootBoardNode;
-            this.moveCounter = moveCounter + 1;
+            this.moveCounter = moveCounter;
         }
 
         private Board getBoard() {
@@ -141,8 +133,21 @@ public class Solver {
             return moveCounter;
         }
 
-        public int getPriority(){
-            return board.manhattan() + moveCounter;
+        public int getPriority() {
+            return board.manhattan() ;
+        }
+
+        public boolean equals(Object y) {
+            if (y == this)
+                return true;
+
+            if (y instanceof BoardNode) {
+                BoardNode other = (BoardNode) y;
+                if (this.board.equals(other.board)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

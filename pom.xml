@@ -50,6 +50,11 @@
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
         </dependency>
+        <dependency>
+            <groupId>edu.princeton.cs.algs4</groupId>
+            <artifactId>algs4</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 
@@ -66,5 +71,4 @@
         </repository>
     </repositories>
 
-    
 </project>

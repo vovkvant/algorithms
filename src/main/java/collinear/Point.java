@@ -12,7 +12,9 @@ package collinear;
  *
  *************************************************************************/
 
-import api.StdDraw;
+
+
+import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.Comparator;
 

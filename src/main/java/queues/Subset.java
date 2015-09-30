@@ -1,6 +1,6 @@
 package queues;
 
-import api.StdIn;
+import edu.princeton.cs.algs4.StdIn;
 
 /**
  * User: vovkvant

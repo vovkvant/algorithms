@@ -1,6 +1,6 @@
 package percolation;
 
-import api.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 /**
  * User: vovkvant

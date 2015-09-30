@@ -1,15 +1,11 @@
 package puzzle;
 
-import api.In;
-import api.StdOut;
+import edu.princeton.cs.algs4.In;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +47,6 @@ public class PuzzleTest {
         int hamming = board.hamming();
         Assert.assertEquals("Wrong hamming: " + hamming, 0, hamming);
 
-
         board = getBoardFromFile("puzzle/puzzle01.txt");
         Assert.assertFalse(board.isGoal());
         manhattan = board.manhattan();
@@ -59,13 +54,24 @@ public class PuzzleTest {
         hamming = board.hamming();
         Assert.assertEquals("Wrong hamming: " + hamming, 1, hamming);
 
-
         board = getBoardFromFile("puzzle/puzzle02.txt");
         Assert.assertFalse(board.isGoal());
         manhattan = board.manhattan();
         Assert.assertEquals("Wrong mmanhattan: " + manhattan, 2, manhattan);
         hamming = board.hamming();
         Assert.assertEquals("Wrong hamming: " + hamming, 2, hamming);
+
+
+        //test for neighbors
+        board = getBoardFromFile("puzzle/puzzle08.txt");
+        System.out.println(board);
+        Iterator<Board> boardIterator = board.neighbors().iterator();
+        while (boardIterator.hasNext()) {
+            Board next = boardIterator.next();
+            System.out.println("Manhattan: " + next.manhattan());
+            System.out.println(next.toString());
+        }
+
 
         /*
         // solve the puzzle
@@ -80,6 +86,40 @@ public class PuzzleTest {
                 StdOut.println(board);
         }
         */
+    }
+
+    @Test
+    public void testSolver1() {
+        Board board = getBoardFromFile("puzzle/puzzle04.txt");
+        Solver solver = new Solver(board);
+        Assert.assertTrue(solver.isSolvable());
+        Assert.assertEquals(4, solver.moves());
+
+        board = getBoardFromFile("puzzle/puzzle08.txt");
+        solver = new Solver(board);
+        Assert.assertTrue(solver.isSolvable());
+        Assert.assertEquals(9, solver.moves());
+
+    }
+
+    @Test
+    public void testSolver() {
+        //Board board = getBoardFromFile("puzzle/puzzle3x3-unsolvable.txt");
+        Board board = getBoardFromFile("puzzle/puzzle50.txt");
+        //board = board.twin();
+        Solver solver = new Solver(board);
+        if (solver.isSolvable()) {
+            System.out.println(solver.moves());
+
+            Iterator<Board> solveIterator = solver.solution().iterator();
+            while (solveIterator.hasNext()) {
+                Board next = solveIterator.next();
+                System.out.println("Manhattan: " + next.manhattan());
+                System.out.println(next.toString());
+            }
+        } else {
+            System.out.println("No solution");
+        }
     }
 
 }

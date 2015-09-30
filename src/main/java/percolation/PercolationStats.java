@@ -1,8 +1,8 @@
 package percolation;
 
-import api.StdRandom;
-import api.StdStats;
-import api.Stopwatch;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.Stopwatch;
 
 /**
  * User: vovkvant

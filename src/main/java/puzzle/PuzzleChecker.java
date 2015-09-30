@@ -1,6 +1,7 @@
 package puzzle;
 
-import api.In;
+
+import edu.princeton.cs.algs4.In;
 
 /*************************************************************************
  *  Compilation:  javac PuzzleChecker.java
