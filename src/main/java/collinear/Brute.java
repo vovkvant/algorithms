@@ -23,6 +23,7 @@ public class Brute {
         pointArray[last] = p;
         last++;
         p.draw();
+        LineSegment ls;
     }
 
     public void startProcess() {
