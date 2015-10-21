@@ -56,19 +56,32 @@ public class PointTest {
     @Test
     public void testBrute(){
         //In in = new In(this.getClass().getResource("/collinear/grid4x4.txt"));      // input file
-        In in = new In(this.getClass().getResource("/collinear/horizontal5.txt"));      // input file
+        In in = new In(this.getClass().getResource("/collinear/rs1423.txt"));      // input file
         int N = in.readInt();
 
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
-
-        BruteCollinearPoints bruteCollinearPoints = new BruteCollinearPoints(N);
-        while (!in.isEmpty()) {
+        Point[] points = new Point[N];
+        for (int i = 0; i < N; i++) {
             int x = in.readInt();
             int y = in.readInt();
-            bruteCollinearPoints.addPoint(x, y);
+            points[i] = new Point(x, y);
         }
-        bruteCollinearPoints.startProcess();
+
+        // draw the points
+        StdDraw.show(0);
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+
+        // print and draw the line segments
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
+        }
+
         System.out.println("BruteCollinearPoints force is finished!");
         try {
             Thread.sleep(100000);
@@ -76,9 +89,6 @@ public class PointTest {
 
         }
     }
-
-
-
 
     @Test
     public void testFastCollinearPoints(){

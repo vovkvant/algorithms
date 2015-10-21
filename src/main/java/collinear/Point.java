@@ -21,7 +21,7 @@ import java.util.Comparator;
 public class Point implements Comparable<Point> {
 
     // compare points by slope
-    public final Comparator<Point> SLOPE_ORDER = new Comparator<Point>() {
+    private final Comparator<Point> SLOPE_ORDER = new Comparator<Point>() {
         @Override
         public int compare(Point p1, Point p2) {
             double slope_1 = slopeTo(p1);
@@ -90,6 +90,11 @@ public class Point implements Comparable<Point> {
             }
         }
         return 0;
+    }
+
+    public Comparator<Point> slopeOrder() {
+        /* YOUR CODE HERE */
+        return SLOPE_ORDER;
     }
 
     // return string representation of this point
